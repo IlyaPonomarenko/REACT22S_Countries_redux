@@ -1,24 +1,33 @@
 import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import ListGroup from "react-bootstrap/ListGroup";
-import Row from "react-bootstrap/Row";
-import Spinner from "react-bootstrap/Spinner";
+import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import { addFavourite } from "../features/countries/favouritesSlice";
+import { clearFavourites } from "../features/countries/favouritesSlice";
+import { initializeCountries } from "../features/countries/countriesSlice";
 
 const Favourites = () => {
   var numFormatter = require("@skalwar/simple_number_formatter");
   const dispatch = useDispatch();
-  const countriesList = useSelector((state) => state.countries.countries);
+  let countriesList = useSelector((state) => state.countries.countries);
   const loading = useSelector((state) => state.countries.isLoading);
   const [search, setSearch] = useState("");
+  const [favouritesList, setFavouritesList] = useState([]);
+
+  if (favouritesList !== null) {
+    countriesList = countriesList.filter((c) =>
+      favouritesList.includes(c.name.common)
+    );
+  } else {
+    countriesList = [];
+  }
 
   useEffect(() => {
-    dispatch(addFavourite());
+    dispatch(initializeCountries())
+    dispatch(clearFavourites());
+    setFavouritesList(localStorage.getItem("Favourites"))
   }, [dispatch]);
   return (
     <Container fluid>
@@ -34,6 +43,11 @@ const Favourites = () => {
               onChange={(e) => setSearch(e.target.value)}
             />
           </Form>
+        </Col>
+        <Col>
+          <Button
+            onClick={() => dispatch(clearFavourites())}
+          >Clear favourites</Button>
         </Col>
       </Row>
       <Row xs={2} md={3} lg={4} className=" g-3">
@@ -51,7 +65,6 @@ const Favourites = () => {
                 state={{ country: country }} //Passing state allows access to it in a linked component Countries=>CountriesSingle
               >
                 <Card className="h-100">
-                    <i class="bi bi-heart-fill"></i>
                   <Card.Body className="d-flex flex-column">
                     <Card.Img variant="top" src={country.flags.png} />
                     <Card.Title>{country.name.common}</Card.Title>
@@ -63,7 +76,7 @@ const Favourites = () => {
                       className="flex-grow-1 justify-content-end"
                     >
                       <ListGroup.Item>
-                        <i className="bi bi-translate me-2" onClick={() => dispatch(addFavourite(country.name.common))}></i>
+                        <i className="bi bi-translate me-2"></i>
                         {Object.values(country.languages || {}).join(", ")}
                       </ListGroup.Item>
 

@@ -9,6 +9,7 @@ import Spinner from "react-bootstrap/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { initializeCountries } from "../features/countries/countriesSlice";
+import { addFavourite } from "../features/countries/favouritesSlice";
 
 const Countries = () => {
   var numFormatter = require("@skalwar/simple_number_formatter");
@@ -18,6 +19,7 @@ const Countries = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
+    dispatch(addFavourite())
     dispatch(initializeCountries());
   }, [dispatch]);
   return (
@@ -51,6 +53,7 @@ const Countries = () => {
                 state={{ country: country }} //Passing state allows access to it in a linked component Countries=>CountriesSingle
               >
                 <Card className="h-100">
+                <i class="bi bi-heart-fill" onClick={() => dispatch(addFavourite(country.name.common))}></i>
                   <Card.Body className="d-flex flex-column">
                     <Card.Img variant="top" src={country.flags.png} />
                     <Card.Title>{country.name.common}</Card.Title>
