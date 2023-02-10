@@ -6,6 +6,8 @@ const CountriesSingle = () => {
   const { single } = useParams();
   const [data, updateData] = useState();
 
+  useEffect(()=>{},[])
+  
   return (
     <Container>
       <div>Single Country will be here</div>
