@@ -48,7 +48,7 @@ const Countries = () => {
             <Col className="mt-5">
               <LinkContainer
                 to={`/countries/${country.name.common}`}
-                state={{ country: country }}
+                state={{ country: country }} //Passing state allows access to it in a linked component Countries=>CountriesSingle
               >
                 <Card className="h-100">
                   <Card.Body className="d-flex flex-column">
