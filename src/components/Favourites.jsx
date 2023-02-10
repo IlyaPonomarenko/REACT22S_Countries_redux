@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 import Spinner from "react-bootstrap/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import { initializeCountries } from "../features/countries/countriesSlice";
+import { addFavourite } from "../features/countries/favouritesSlice";
 
 const Favourites = () => {
   var numFormatter = require("@skalwar/simple_number_formatter");
@@ -18,7 +18,7 @@ const Favourites = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    dispatch(initializeCountries());
+    dispatch(addFavourite());
   }, [dispatch]);
   return (
     <Container fluid>
@@ -63,7 +63,7 @@ const Favourites = () => {
                       className="flex-grow-1 justify-content-end"
                     >
                       <ListGroup.Item>
-                        <i className="bi bi-translate me-2"></i>
+                        <i className="bi bi-translate me-2" onClick={() => dispatch(addFavourite(country.name.common))}></i>
                         {Object.values(country.languages || {}).join(", ")}
                       </ListGroup.Item>
 
