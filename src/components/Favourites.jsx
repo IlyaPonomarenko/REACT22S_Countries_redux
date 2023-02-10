@@ -25,9 +25,10 @@ const Favourites = () => {
   }
 
   useEffect(() => {
-    dispatch(initializeCountries())
+    
     dispatch(clearFavourites());
     setFavouritesList(localStorage.getItem("Favourites"))
+    dispatch(initializeCountries())
   }, [dispatch]);
   return (
     <Container fluid>
@@ -46,7 +47,7 @@ const Favourites = () => {
         </Col>
         <Col>
           <Button
-            onClick={() => dispatch(clearFavourites())}
+            // onClick={() => dispatch(clearFavourites())}
           >Clear favourites</Button>
         </Col>
       </Row>
