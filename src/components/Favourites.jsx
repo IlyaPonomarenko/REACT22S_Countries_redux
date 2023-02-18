@@ -14,8 +14,7 @@ const Favourites = () => {
   let countriesList = useSelector((state) => state.countries.countries);
   const loading = useSelector((state) => state.countries.isLoading);
   const [search, setSearch] = useState("");
-  const [favouritesList, setFavouritesList] = useState([]);
-
+  const favouritesList = useSelector((state) => state.favourites.favourites)
   if (favouritesList !== null) {
     countriesList = countriesList.filter((c) =>
       favouritesList.includes(c.name.common)
@@ -25,9 +24,6 @@ const Favourites = () => {
   }
 
   useEffect(() => {
-    
-    dispatch(clearFavourites());
-    setFavouritesList(localStorage.getItem("Favourites"))
     dispatch(initializeCountries())
   }, [dispatch]);
   return (
@@ -47,7 +43,7 @@ const Favourites = () => {
         </Col>
         <Col>
           <Button
-            // onClick={() => dispatch(clearFavourites())}
+           onClick={() => dispatch(clearFavourites())}
           >Clear favourites</Button>
         </Col>
       </Row>

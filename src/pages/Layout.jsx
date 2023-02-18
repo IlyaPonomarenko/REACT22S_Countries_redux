@@ -41,7 +41,7 @@ const Layout = () => {
           </Container>
           {user &&
           <>
-          <h6 className="m-1">Hello {user.name}!</h6>
+          <h6 className="m-1">Hello {user.email}!</h6>
           <Button className="m-1" onClick={() => logout()}>Signout</Button>
           </>
 }

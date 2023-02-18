@@ -9,17 +9,20 @@ import Spinner from "react-bootstrap/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { initializeCountries } from "../features/countries/countriesSlice";
-import { addFavourite } from "../features/countries/favouritesSlice";
+import {
+  addFavourite,
+  removeOneFavourite,
+} from "../features/countries/favouritesSlice";
 
 const Countries = () => {
   var numFormatter = require("@skalwar/simple_number_formatter");
   const dispatch = useDispatch();
   const countriesList = useSelector((state) => state.countries.countries);
   const loading = useSelector((state) => state.countries.isLoading);
+  const favouritesList = useSelector((state) => state.favourites.favourites);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    dispatch(addFavourite())
     dispatch(initializeCountries());
   }, [dispatch]);
   return (
@@ -48,12 +51,24 @@ const Countries = () => {
           })
           .map((country) => (
             <Col className="mt-5">
+              {favouritesList.includes(country.name.common) ? (
+                <i
+                  class="bi bi-heart-fill"
+                  onClick={() =>
+                    dispatch(removeOneFavourite(country.name.common))
+                  }
+                ></i>
+              ) : (
+                <i
+                  className="bi bi-heart"
+                  onClick={() => dispatch(addFavourite(country.name.common))}
+                ></i>
+              )}
               <LinkContainer
                 to={`/countries/${country.name.common}`}
                 state={{ country: country }} //Passing state allows access to it in a linked component Countries=>CountriesSingle
               >
                 <Card className="h-100">
-                <i class="bi bi-heart-fill" onClick={() => dispatch(addFavourite(country.name.common))}></i>
                   <Card.Body className="d-flex flex-column">
                     <Card.Img variant="top" src={country.flags.png} />
                     <Card.Title>{country.name.common}</Card.Title>
